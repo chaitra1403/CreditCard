@@ -1,0 +1,37 @@
+[
+  {
+    "previousNotifications_*string": "Notification received successfully",
+    "responseStatus_*string": "Success",
+    "cardLast4_*string": "1234",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "previousNotifications_*string": "No new notifications",
+    "responseStatus_*string": "Completed",
+    "cardLast4_*string": "5678",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "previousNotifications_*string": "Pending notifications",
+    "responseStatus_*string": "In Progress",
+    "cardLast4_*string": "9012",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "previousNotifications_*string": "Invalid notification format",
+    "responseStatus_*string": "Error",
+    "cardLast4_*string": "123",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  },
+  {
+    "previousNotifications_*string": "Failed to retrieve notifications",
+    "responseStatus_*string": "Failed",
+    "cardLast4_*string": "abcd",
+    "statusCode": 500,
+    "scenario": "Internal Server Error"
+  }
+]
