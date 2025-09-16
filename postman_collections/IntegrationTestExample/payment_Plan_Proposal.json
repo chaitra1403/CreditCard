@@ -1,0 +1,47 @@
+[
+  {
+    "outstandingBalance_*string": "\"1200.50\"",
+    "paymentPlan.installmentAmount_*string": "\"100.00\"",
+    "paymentPlan.interestRate_*string": "\"5.5\"",
+    "paymentPlan.termLength_*string": "\"12\"",
+    "cardLast4_*string": "\"1234\"",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "outstandingBalance_*string": "\"2500.00\"",
+    "paymentPlan.installmentAmount_*string": "\"200.00\"",
+    "paymentPlan.interestRate_*string": "\"4.0\"",
+    "paymentPlan.termLength_*string": "\"24\"",
+    "cardLast4_*string": "\"5678\"",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "outstandingBalance_*string": "\"750.75\"",
+    "paymentPlan.installmentAmount_*string": "\"75.00\"",
+    "paymentPlan.interestRate_*string": "\"3.2\"",
+    "paymentPlan.termLength_*string": "\"10\"",
+    "cardLast4_*string": "\"9876\"",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "outstandingBalance_*string": "\"1500.00\"",
+    "paymentPlan.installmentAmount_*string": "\"150.00\"",
+    "paymentPlan.interestRate_*string": "\"6.0\"",
+    "paymentPlan.termLength_*string": "\"15\"",
+    "cardLast4_*string": "\"4321\"",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "outstandingBalance_*string": "\"3000.00\"",
+    "paymentPlan.installmentAmount_*string": "\"250.00\"",
+    "paymentPlan.interestRate_*string": "\"7.5\"",
+    "paymentPlan.termLength_*string": "\"36\"",
+    "cardLast4_*string": "\"6543\"",
+    "statusCode": 200,
+    "scenario": "OK"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "nonPaymentStatus_*string": "Active",
+    "legalStatus_*string": "Compliant",
+    "cardLast4_*string": "1234",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "nonPaymentStatus_*string": "Pending",
+    "legalStatus_*string": "Non-Compliant",
+    "cardLast4_*string": "5678",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "nonPaymentStatus_*string": "Suspended",
+    "legalStatus_*string": "Under Review",
+    "cardLast4_*string": "9012",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "nonPaymentStatus_*string": "",
+    "legalStatus_*string": "InvalidStatus",
+    "cardLast4_*string": "12",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  },
+  {
+    "nonPaymentStatus_*string": "Unknown",
+    "legalStatus_*string": "",
+    "cardLast4_*string": "abcd",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  }
+]
