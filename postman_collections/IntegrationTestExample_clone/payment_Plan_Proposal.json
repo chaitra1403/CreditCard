@@ -1,0 +1,47 @@
+[
+  {
+    "outstandingBalance_*string": "1500.00",
+    "paymentPlan.installmentAmount_*string": "150.00",
+    "paymentPlan.interestRate_*string": "5.5",
+    "paymentPlan.termLength_*string": "12",
+    "cardLast4_*string": "1234",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "outstandingBalance_*string": "2500.00",
+    "paymentPlan.installmentAmount_*string": "250.00",
+    "paymentPlan.interestRate_*string": "4.5",
+    "paymentPlan.termLength_*string": "24",
+    "cardLast4_*string": "5678",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "outstandingBalance_*string": "3500.00",
+    "paymentPlan.installmentAmount_*string": "350.00",
+    "paymentPlan.interestRate_*string": "3.5",
+    "paymentPlan.termLength_*string": "36",
+    "cardLast4_*string": "9012",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "outstandingBalance_*string": "invalid_balance",
+    "paymentPlan.installmentAmount_*string": "invalid_amount",
+    "paymentPlan.interestRate_*string": "invalid_rate",
+    "paymentPlan.termLength_*string": "invalid_length",
+    "cardLast4_*string": "12",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  },
+  {
+    "outstandingBalance_*string": "not_a_number",
+    "paymentPlan.installmentAmount_*string": "not_a_number",
+    "paymentPlan.interestRate_*string": "not_a_number",
+    "paymentPlan.termLength_*string": "not_a_number",
+    "cardLast4_*string": "abcd",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  }
+]
