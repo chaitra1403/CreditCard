@@ -1,0 +1,37 @@
+[
+  {
+    "currentDate_*date": "2023-10-01",
+    "paymentDueDate_*date": "2023-10-15",
+    "cardLast4_*string": "1234",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "currentDate_*date": "2023-09-30",
+    "paymentDueDate_*date": "2023-10-10",
+    "cardLast4_*string": "5678",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "currentDate_*date": "2023-10-05",
+    "paymentDueDate_*date": "2023-10-20",
+    "cardLast4_*string": "9012",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "currentDate_*date": "2023-13-01",
+    "paymentDueDate_*date": "2023-15-15",
+    "cardLast4_*string": "12",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  },
+  {
+    "currentDate_*date": "2023-02-30",
+    "paymentDueDate_*date": "2023-10-32",
+    "cardLast4_*string": "abcd",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  }
+]

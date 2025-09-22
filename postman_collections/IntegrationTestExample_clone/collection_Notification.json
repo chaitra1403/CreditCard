@@ -1,0 +1,42 @@
+[
+  {
+    "delinquencyStatus_*string": "Current",
+    "outstandingBalance_*string": "1000.00",
+    "additionalCharges_*string": "50.00",
+    "cardLast4_*string": "1234",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "delinquencyStatus_*string": "Past Due",
+    "outstandingBalance_*string": "1500.00",
+    "additionalCharges_*string": "75.00",
+    "cardLast4_*string": "5678",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "delinquencyStatus_*string": "In Collections",
+    "outstandingBalance_*string": "2000.00",
+    "additionalCharges_*string": "100.00",
+    "cardLast4_*string": "9012",
+    "statusCode": 200,
+    "scenario": "OK"
+  },
+  {
+    "delinquencyStatus_*string": "InvalidStatus",
+    "outstandingBalance_*string": "InvalidBalance",
+    "additionalCharges_*string": "InvalidCharges",
+    "cardLast4_*string": "123",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  },
+  {
+    "delinquencyStatus_*string": "Unknown",
+    "outstandingBalance_*string": "N/A",
+    "additionalCharges_*string": "N/A",
+    "cardLast4_*string": "abcd",
+    "statusCode": 400,
+    "scenario": "Bad Request"
+  }
+]
