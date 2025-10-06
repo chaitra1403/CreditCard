@@ -1,0 +1,67 @@
+[
+    {
+        "testCaseId": 1,
+        "description": "Test user registration with valid data",
+        "input": {
+            "username": "testuser",
+            "email": "testuser@example.com",
+            "password": "SecurePass123"
+        },
+        "expectedOutput": {
+            "success": true,
+            "message": "Registration successful"
+        }
+    },
+    {
+        "testCaseId": 2,
+        "description": "Test user registration with missing email",
+        "input": {
+            "username": "testuser",
+            "email": "",
+            "password": "SecurePass123"
+        },
+        "expectedOutput": {
+            "success": false,
+            "message": "Email is required"
+        }
+    },
+    {
+        "testCaseId": 3,
+        "description": "Test user registration with invalid email format",
+        "input": {
+            "username": "testuser",
+            "email": "invalid-email",
+            "password": "SecurePass123"
+        },
+        "expectedOutput": {
+            "success": false,
+            "message": "Invalid email format"
+        }
+    },
+    {
+        "testCaseId": 4,
+        "description": "Test user registration with short password",
+        "input": {
+            "username": "testuser",
+            "email": "testuser@example.com",
+            "password": "short"
+        },
+        "expectedOutput": {
+            "success": false,
+            "message": "Password must be at least 8 characters long"
+        }
+    },
+    {
+        "testCaseId": 5,
+        "description": "Test user registration with existing username",
+        "input": {
+            "username": "existinguser",
+            "email": "newuser@example.com",
+            "password": "SecurePass123"
+        },
+        "expectedOutput": {
+            "success": false,
+            "message": "Username already exists"
+        }
+    }
+]
