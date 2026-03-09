@@ -1,0 +1,985 @@
+openapi: 3.0.3
+info:
+  title: Postman Test Execution API with File Operations
+  description: |
+    API for managing Postman test execution workflows with comprehensive file operations,
+    error handling, and system resource management. Supports concurrent operations,
+    security validation, and container environments.
+  version: 1.0.0
+  contact:
+    name: QA Engineering Team
+    email: qa-team@example.com
+
+servers:
+  - url: https://api.roostgpt.com/v1
+    description: Production server
+  - url: https://staging-api.roostgpt.com/v1
+    description: Staging server
+
+security:
+  - bearerAuth: []
+  - apiKeyAuth: []
+
+paths:
+  /postman/test-executions:
+    post:
+      summary: Initialize Postman test execution
+      description: Creates a new Postman test execution with specified configuration
+      operationId: initializeTestExecution
+      tags:
+        - Test Execution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestExecutionRequest'
+            examples:
+              standard_execution:
+                summary: Standard test execution
+                value:
+                  trigger_id: "d3b3aa55-413e-459c-b7e1-4d82011f5822"
+                  gitops_config: "Roost poc"
+                  timeout_id: "220"
+                  security_level: "standard"
+                  user_role: "normal_user"
+              concurrent_execution:
+                summary: Concurrent test execution
+                value:
+                  trigger_id: "a1b2c3d4-e5f6-7890-abcd-123456789012"
+                  gitops_config: "Roost poc"
+                  timeout_id: "221"
+                  security_level: "strict"
+                  user_role: "admin_user"
+      responses:
+        '201':
+          description: Test execution initialized successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestExecutionResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /postman/test-executions/{trigger_id}:
+    get:
+      summary: Get test execution status
+      description: Retrieves the current status and details of a test execution
+      operationId: getTestExecutionStatus
+      tags:
+        - Test Execution
+      parameters:
+        - name: trigger_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "d3b3aa55-413e-459c-b7e1-4d82011f5822"
+      responses:
+        '200':
+          description: Test execution status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestExecutionStatus'
+        '404':
+          description: Test execution not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Cancel test execution
+      description: Cancels an ongoing test execution and performs cleanup
+      operationId: cancelTestExecution
+      tags:
+        - Test Execution
+      parameters:
+        - name: trigger_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Test execution cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancellationResponse'
+        '404':
+          description: Test execution not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /postman/test-executions/{trigger_id}/directories:
+    post:
+      summary: Create directory structure
+      description: Creates the required directory structure for test execution
+      operationId: createDirectoryStructure
+      tags:
+        - File Operations
+      parameters:
+        - name: trigger_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectoryCreationRequest'
+      responses:
+        '201':
+          description: Directory structure created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryCreationResponse'
+        '400':
+          description: Invalid directory path or permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '507':
+          description: Insufficient storage space
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /postman/test-executions/{trigger_id}/files:
+    post:
+      summary: Copy files to target directory
+      description: Copies specified files from source to target directory with validation
+      operationId: copyFiles
+      tags:
+        - File Operations
+      parameters:
+        - name: trigger_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileCopyRequest'
+      responses:
+        '200':
+          description: Files copied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileCopyResponse'
+        '400':
+          description: Invalid file parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: File validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /postman/test-executions/{trigger_id}/files/{file_name}/validate:
+    post:
+      summary: Validate report files
+      description: Validates report files for corruption, completeness, and format
+      operationId: validateFile
+      tags:
+        - File Operations
+      parameters:
+        - name: trigger_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: file_name
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "postman_results.html"
+      responses:
+        '200':
+          description: File validation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileValidationResponse'
+        '422':
+          description: File validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /postman/test-executions/concurrent:
+    post:
+      summary: Execute multiple concurrent test executions
+      description: Initiates multiple Postman test executions concurrently
+      operationId: executeConcurrentTests
+      tags:
+        - Concurrent Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConcurrentExecutionRequest'
+      responses:
+        '202':
+          description: Concurrent executions initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConcurrentExecutionResponse'
+        '400':
+          description: Invalid concurrent execution parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /system/resources:
+    get:
+      summary: Get system resource status
+      description: Retrieves current system resource usage and limits
+      operationId: getSystemResources
+      tags:
+        - Resource Management
+      responses:
+        '200':
+          description: System resource status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemResourcesResponse'
+
+  /system/disk-space:
+    get:
+      summary: Check disk space availability
+      description: Checks available disk space for file operations
+      operationId: checkDiskSpace
+      tags:
+        - Resource Management
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "/var/tmp/Roost/RoostGPT"
+      responses:
+        '200':
+          description: Disk space information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiskSpaceResponse'
+        '400':
+          description: Invalid path parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /timeouts/{timeout_id}:
+    delete:
+      summary: Clear timeout
+      description: Clears a specific timeout by ID
+      operationId: clearTimeout
+      tags:
+        - Timeout Management
+      parameters:
+        - name: timeout_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "220"
+      responses:
+        '200':
+          description: Timeout cleared successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeoutResponse'
+        '404':
+          description: Timeout not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /gitops/cleanup:
+    post:
+      summary: Trigger GitOps cleanup
+      description: Initiates GitOps cleanup operations
+      operationId: triggerGitOpsCleanup
+      tags:
+        - GitOps Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GitOpsCleanupRequest'
+      responses:
+        '202':
+          description: GitOps cleanup initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GitOpsCleanupResponse'
+
+  /security/validate-path:
+    post:
+      summary: Validate file system path security
+      description: Validates file system paths for security violations
+      operationId: validatePathSecurity
+      tags:
+        - Security Validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PathSecurityRequest'
+      responses:
+        '200':
+          description: Path validation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathSecurityResponse'
+        '403':
+          description: Security violation detected
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /logs:
+    get:
+      summary: Retrieve system logs
+      description: Retrieves system logs with filtering options
+      operationId: getLogs
+      tags:
+        - Logging
+      parameters:
+        - name: trigger_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: log_level
+          in: query
+          schema:
+            type: string
+            enum: [DEBUG, INFO, WARNING, ERROR]
+        - name: operation_type
+          in: query
+          schema:
+            type: string
+        - name: from_timestamp
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to_timestamp
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+      responses:
+        '200':
+          description: Logs retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogsResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    TestExecutionRequest:
+      type: object
+      required:
+        - trigger_id
+        - gitops_config
+      properties:
+        trigger_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the test execution
+          example: "d3b3aa55-413e-459c-b7e1-4d82011f5822"
+        gitops_config:
+          type: string
+          description: GitOps configuration name
+          example: "Roost poc"
+        timeout_id:
+          type: string
+          description: Timeout identifier
+          example: "220"
+        security_level:
+          type: string
+          enum: [standard, strict]
+          default: standard
+        user_role:
+          type: string
+          enum: [normal_user, admin_user]
+          default: normal_user
+        container_config:
+          $ref: '#/components/schemas/ContainerConfig'
+        resource_limits:
+          $ref: '#/components/schemas/ResourceLimits'
+
+    TestExecutionResponse:
+      type: object
+      properties:
+        trigger_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [initialized, running, completed, failed, cancelled]
+        created_at:
+          type: string
+          format: date-time
+        target_directory:
+          type: string
+        timeout_id:
+          type: string
+
+    TestExecutionStatus:
+      type: object
+      properties:
+        trigger_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [initialized, running, completed, failed, cancelled]
+        progress:
+          type: object
+          properties:
+            directory_created:
+              type: boolean
+            files_copied:
+              type: integer
+            total_files:
+              type: integer
+        error_details:
+          type: object
+          properties:
+            error_code:
+              type: string
+            error_message:
+              type: string
+            error_type:
+              type: string
+        resource_usage:
+          $ref: '#/components/schemas/ResourceUsage'
+        timestamps:
+          type: object
+          properties:
+            started_at:
+              type: string
+              format: date-time
+            completed_at:
+              type: string
+              format: date-time
+
+    DirectoryCreationRequest:
+      type: object
+      required:
+        - target_path
+      properties:
+        target_path:
+          type: string
+          description: Target directory path to create
+          example: "/var/tmp/Roost/RoostGPT/postman_golang_test-2/d3b3aa55-413e-459c-b7e1-4d82011f5822/executor/postman_reports"
+        permissions:
+          type: string
+          description: Directory permissions
+          example: "755"
+        create_parents:
+          type: boolean
+          default: true
+          description: Create parent directories if they don't exist
+
+    DirectoryCreationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        path_created:
+          type: string
+        permissions_set:
+          type: string
+        disk_space_used:
+          type: integer
+          description: Disk space used in bytes
+
+    FileCopyRequest:
+      type: object
+      required:
+        - source_files
+        - target_directory
+      properties:
+        source_files:
+          type: array
+          items:
+            type: string
+          example: ["postman_results.html", "report_output.html"]
+        target_directory:
+          type: string
+          example: "/var/tmp/Roost/RoostGPT/postman_golang_test-2/d3b3aa55-413e-459c-b7e1-4d82011f5822/executor/postman_reports"
+        validate_files:
+          type: boolean
+          default: true
+        overwrite_existing:
+          type: boolean
+          default: false
+
+    FileCopyResponse:
+      type: object
+      properties:
+        copied_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/CopiedFile'
+        failed_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FailedFile'
+        total_size_copied:
+          type: integer
+          description: Total size copied in bytes
+
+    CopiedFile:
+      type: object
+      properties:
+        source_path:
+          type: string
+        target_path:
+          type: string
+        file_size:
+          type: integer
+        checksum:
+          type: string
+
+    FailedFile:
+      type: object
+      properties:
+        source_path:
+          type: string
+        error_code:
+          type: string
+        error_message:
+          type: string
+        error_type:
+          type: string
+          enum: [file_not_found, permission_denied, corruption_detected, empty_file, incomplete_file]
+
+    FileValidationResponse:
+      type: object
+      properties:
+        file_name:
+          type: string
+        is_valid:
+          type: boolean
+        file_size:
+          type: integer
+        file_condition:
+          type: string
+          enum: [valid_html, corrupted_html, zero_bytes, truncated]
+        validation_details:
+          type: object
+          properties:
+            html_structure_valid:
+              type: boolean
+            content_complete:
+              type: boolean
+            encoding_valid:
+              type: boolean
+
+    ConcurrentExecutionRequest:
+      type: object
+      required:
+        - executions
+      properties:
+        executions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestExecutionRequest'
+          minItems: 2
+          maxItems: 10
+
+    ConcurrentExecutionResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+        executions:
+          type: array
+          items:
+            type: object
+            properties:
+              trigger_id:
+                type: string
+                format: uuid
+              status:
+                type: string
+                enum: [queued, running, completed, failed]
+        estimated_completion:
+          type: string
+          format: date-time
+
+    SystemResourcesResponse:
+      type: object
+      properties:
+        memory:
+          type: object
+          properties:
+            total:
+              type: integer
+              description: Total memory in bytes
+            available:
+              type: integer
+              description: Available memory in bytes
+            usage_percentage:
+              type: number
+              format: float
+        file_handles:
+          type: object
+          properties:
+            limit:
+              type: integer
+            current_usage:
+              type: integer
+            available:
+              type: integer
+        disk_space:
+          $ref: '#/components/schemas/DiskSpaceInfo'
+
+    DiskSpaceResponse:
+      type: object
+      properties:
+        path:
+          type: string
+        disk_space:
+          $ref: '#/components/schemas/DiskSpaceInfo'
+
+    DiskSpaceInfo:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total disk space in bytes
+        available:
+          type: integer
+          description: Available disk space in bytes
+        used:
+          type: integer
+          description: Used disk space in bytes
+        usage_percentage:
+          type: number
+          format: float
+
+    TimeoutResponse:
+      type: object
+      properties:
+        timeout_id:
+          type: string
+        status:
+          type: string
+          enum: [cleared, expired, not_found]
+        cleared_at:
+          type: string
+          format: date-time
+
+    GitOpsCleanupRequest:
+      type: object
+      required:
+        - config_name
+      properties:
+        config_name:
+          type: string
+          example: "Roost poc"
+        cleanup_type:
+          type: string
+          enum: [immediate, deferred]
+          default: deferred
+        trigger_id:
+          type: string
+          format: uuid
+
+    GitOpsCleanupResponse:
+      type: object
+      properties:
+        cleanup_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [initiated, deferred, completed, failed]
+        message:
+          type: string
+          example: "GitOps Cleanup is deferred for Roost poc"
+
+    PathSecurityRequest:
+      type: object
+      required:
+        - target_path
+        - user_role
+        - security_level
+      properties:
+        target_path:
+          type: string
+        user_role:
+          type: string
+          enum: [normal_user, admin_user]
+        security_level:
+          type: string
+          enum: [standard, strict]
+        operation_type:
+          type: string
+          enum: [read, write, create, delete]
+
+    PathSecurityResponse:
+      type: object
+      properties:
+        is_allowed:
+          type: boolean
+        security_violations:
+          type: array
+          items:
+            type: string
+        sanitized_path:
+          type: string
+        risk_level:
+          type: string
+          enum: [low, medium, high, critical]
+
+    LogsResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        total_count:
+          type: integer
+        has_more:
+          type: boolean
+
+    LogEntry:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        level:
+          type: string
+          enum: [DEBUG, INFO, WARNING, ERROR]
+        message:
+          type: string
+        operation_type:
+          type: string
+        trigger_id:
+          type: string
+          format: uuid
+        correlation_id:
+          type: string
+        additional_context:
+          type: object
+
+    ContainerConfig:
+      type: object
+      properties:
+        container_type:
+          type: string
+          enum: [docker, kubernetes]
+        mount_points:
+          type: array
+          items:
+            type: string
+        restart_status:
+          type: string
+          enum: [enabled, disabled, automatic]
+
+    ResourceLimits:
+      type: object
+      properties:
+        memory_limit:
+          type: string
+          example: "1GB"
+        file_handle_limit:
+          type: integer
+          example: 1000
+        timeout_threshold:
+          type: integer
+          description: Timeout threshold in seconds
+          example: 60
+
+    ResourceUsage:
+      type: object
+      properties:
+        memory_used:
+          type: integer
+          description: Memory used in bytes
+        file_handles_used:
+          type: integer
+        disk_space_used:
+          type: integer
+          description: Disk space used in bytes
+
+    CancellationResponse:
+      type: object
+      properties:
+        trigger_id:
+          type: string
+          format: uuid
+        cancelled_at:
+          type: string
+          format: date-time
+        cleanup_status:
+          type: string
+          enum: [completed, in_progress, failed]
+        resources_freed:
+          $ref: '#/components/schemas/ResourceUsage'
+
+    ErrorResponse:
+      type: object
+      properties:
+        error_code:
+          type: string
+        error_message:
+          type: string
+        error_type:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        trigger_id:
+          type: string
+          format: uuid
+        correlation_id:
+          type: string
+        additional_details:
+          type: object
+
+  examples:
+    SuccessfulExecution:
+      summary: Successful test execution
+      value:
+        trigger_id: "d3b3aa55-413e-459c-b7e1-4d82011f5822"
+        status: "completed"
+        progress:
+          directory_created: true
+          files_copied: 1
+          total_files: 1
+
+    FileNotFoundError:
+      summary: File not found error
+      value:
+        error_code: "FILE_NOT_FOUND"
+        error_message: "Error copying file from postman_results.html to target: Source file does not exist"
+        error_type: "file_not_found"
+        trigger_id: "d3b3aa55-413e-459c-b7e1-4d82011f5822"
+
+    PermissionDeniedError:
+      summary: Permission denied error
+      value:
+        error_code: "PERMISSION_DENIED"
+        error_message: "Permission denied: Cannot create directory structure"
+        error_type: "permission_denied"
+
+    DiskSpaceError:
+      summary: Insufficient disk space error
+      value:
+        error_code: "DISK_SPACE_FULL"
+        error_message: "Insufficient disk space for operation"
+        error_type: "disk_space_full"
