@@ -1,0 +1,1421 @@
+openapi: 3.0.3
+info:
+  title: Credit Card Collection Management System API
+  description: |
+    Comprehensive API for automated credit card collection management including 
+    notification processing, payment workflows, regulatory compliance, and 
+    multi-channel communication with security masking for PII protection.
+  version: 1.0.0
+  contact:
+    name: Collection Management System
+    email: api-support@collections.com
+  license:
+    name: Proprietary
+    url: https://collections.com/license
+
+servers:
+  - url: https://api.collections.com/v1
+    description: Production server
+  - url: https://staging-api.collections.com/v1
+    description: Staging server
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+paths:
+  /accounts/{accountId}/notifications/due-reminders:
+    post:
+      tags:
+        - Notifications
+        - Security
+      summary: Generate credit card due reminder with security masking
+      description: Creates automated due payment reminders with PII protection and regulatory compliance
+      operationId: generateDueReminder
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+          description: Unique account identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DueReminderRequest'
+            examples:
+              active_account:
+                summary: Active account due reminder
+                value:
+                  cardLastFour: "1234"
+                  accountStatus: "Active"
+                  daysUntilDue: 3
+                  paymentAmount: 250.00
+                  communicationChannels: ["Email", "SMS", "Postal"]
+      responses:
+        '201':
+          description: Due reminder notification created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DueReminderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/overdue-alerts:
+    post:
+      tags:
+        - Collection
+        - Overdue
+      summary: Process overdue balance alert with fee calculations
+      description: Generates overdue alerts with automated fee calculations and interest processing
+      operationId: processOverdueAlert
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OverdueAlertRequest'
+      responses:
+        '201':
+          description: Overdue alert processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverdueAlertResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/formal-notices:
+    post:
+      tags:
+        - Collection
+        - Legal
+      summary: Generate formal collection notice for delinquent accounts
+      description: Creates formal collection notices with legal compliance statements and itemized charges
+      operationId: generateFormalNotice
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormalNoticeRequest'
+      responses:
+        '201':
+          description: Formal collection notice generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormalNoticeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/payment-plans:
+    post:
+      tags:
+        - Payment Plans
+        - Structured Repayment
+      summary: Generate payment plan proposal with multiple options
+      description: Creates payment plan proposals with reduced interest rates and flexible terms
+      operationId: generatePaymentPlanProposal
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentPlanRequest'
+      responses:
+        '201':
+          description: Payment plan proposal generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentPlanResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/payment-plans/{planId}/payments:
+    post:
+      tags:
+        - Payment Plans
+        - Payment Processing
+      summary: Execute payment plan payment processing
+      description: Processes automated payment plan payments with balance tracking
+      operationId: executePaymentPlanPayment
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+        - name: planId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentPlanExecutionRequest'
+      responses:
+        '200':
+          description: Payment plan payment processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentPlanExecutionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/legal-actions:
+    post:
+      tags:
+        - Legal Actions
+        - Court Proceedings
+      summary: Initiate legal action with documentation preparation
+      description: Initiates court proceedings with comprehensive legal documentation
+      operationId: initiateLegalAction
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalActionRequest'
+      responses:
+        '201':
+          description: Legal action initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalActionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/agency-transfers:
+    post:
+      tags:
+        - Collection Agency
+        - Data Transfer
+      summary: Transfer account to collection agency with secure data transmission
+      description: Securely transfers account data to external collection agencies with encryption
+      operationId: transferToCollectionAgency
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgencyTransferRequest'
+      responses:
+        '201':
+          description: Account transferred to collection agency successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgencyTransferResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/communications:
+    post:
+      tags:
+        - Multi-Channel Communication
+        - Communication Workflow
+      summary: Deliver multi-channel communications with tracking
+      description: Sends notifications across multiple communication channels with delivery confirmation
+      operationId: deliverMultiChannelCommunication
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiChannelCommunicationRequest'
+      responses:
+        '200':
+          description: Multi-channel communication delivered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultiChannelCommunicationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/status:
+    put:
+      tags:
+        - Status Management
+        - Lifecycle Transitions
+      summary: Manage account status transitions throughout collection lifecycle
+      description: Updates account status with proper transition validation and audit trails
+      operationId: updateAccountStatus
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusTransitionRequest'
+      responses:
+        '200':
+          description: Account status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusTransitionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/payments:
+    post:
+      tags:
+        - Payment Processing
+        - Edge Cases
+      summary: Process mid-collection payments with workflow adjustments
+      description: Handles payments received during active collection with workflow modifications
+      operationId: processMidCollectionPayment
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MidCollectionPaymentRequest'
+      responses:
+        '200':
+          description: Mid-collection payment processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MidCollectionPaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /accounts/{accountId}/calculations:
+    post:
+      tags:
+        - Financial Engine
+        - Calculations
+      summary: Execute complex interest rate and fee calculations
+      description: Performs comprehensive financial calculations including compound interest and fees
+      operationId: executeFinancialCalculations
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialCalculationRequest'
+      responses:
+        '200':
+          description: Financial calculations completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialCalculationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /compliance/validation:
+    post:
+      tags:
+        - Regulatory Compliance
+        - Compliance Validation
+      summary: Validate regulatory compliance across all collection activities
+      description: Ensures all collection processes comply with FDCPA and state regulations
+      operationId: validateRegulatoryCompliance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceValidationRequest'
+      responses:
+        '200':
+          description: Compliance validation completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceValidationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/sync:
+    post:
+      tags:
+        - Integration
+        - Cross-System Workflow
+      summary: Synchronize data across all integrated systems
+      description: Performs real-time data synchronization between internal systems and collection agencies
+      operationId: synchronizeIntegratedSystems
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemSyncRequest'
+      responses:
+        '200':
+          description: System synchronization completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemSyncResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /templates/communications:
+    post:
+      tags:
+        - Templates
+        - Dynamic Content
+      summary: Generate dynamic communication templates with personalization
+      description: Creates personalized communication templates with regulatory compliance and accessibility
+      operationId: generateDynamicTemplate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DynamicTemplateRequest'
+      responses:
+        '201':
+          description: Dynamic template generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DynamicTemplateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    DueReminderRequest:
+      type: object
+      required:
+        - cardLastFour
+        - accountStatus
+        - daysUntilDue
+        - paymentAmount
+        - communicationChannels
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "1234"
+          description: Last four digits of credit card number
+        accountStatus:
+          type: string
+          enum: [Active, Inactive, Suspended]
+          example: "Active"
+        daysUntilDue:
+          type: integer
+          minimum: 1
+          maximum: 30
+          example: 3
+        paymentAmount:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 250.00
+        communicationChannels:
+          type: array
+          items:
+            type: string
+            enum: [Email, SMS, Postal, Phone]
+          minItems: 1
+          example: ["Email", "SMS", "Postal"]
+
+    DueReminderResponse:
+      type: object
+      properties:
+        notificationId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****1234"
+        paymentAmount:
+          type: number
+          format: decimal
+          example: 250.00
+        deliveryChannels:
+          type: array
+          items:
+            type: string
+          example: ["Email", "SMS", "Postal"]
+        collectionStage:
+          type: string
+          example: "Pre-Due Reminder"
+        regulatoryCompliance:
+          type: string
+          example: "FDCPA Compliant"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00Z"
+
+    OverdueAlertRequest:
+      type: object
+      required:
+        - cardLastFour
+        - initialStatus
+        - daysPastDue
+        - principalAmount
+        - interestRate
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "5678"
+        initialStatus:
+          type: string
+          enum: [Active, Inactive, Suspended]
+          example: "Active"
+        daysPastDue:
+          type: integer
+          minimum: 1
+          example: 1
+        principalAmount:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 250.00
+        interestRate:
+          type: number
+          format: decimal
+          minimum: 0
+          maximum: 100
+          example: 24.99
+
+    OverdueAlertResponse:
+      type: object
+      properties:
+        alertId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****5678"
+        totalAmountOwed:
+          type: number
+          format: decimal
+          example: 275.50
+        lateFee:
+          type: number
+          format: decimal
+          example: 25.50
+        updatedStatus:
+          type: string
+          example: "Overdue"
+        collectionStage:
+          type: string
+          example: "Initial Overdue Alert"
+        communicationChannels:
+          type: array
+          items:
+            type: string
+          example: ["Email", "SMS", "Phone Call"]
+
+    FormalNoticeRequest:
+      type: object
+      required:
+        - cardLastFour
+        - daysPastDue
+        - principal
+        - interest
+        - lateFees
+        - collectionFees
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "9012"
+        daysPastDue:
+          type: integer
+          minimum: 1
+          example: 60
+        principal:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 1000.00
+        interest:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 200.75
+        lateFees:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 150.00
+        collectionFees:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 75.00
+
+    FormalNoticeResponse:
+      type: object
+      properties:
+        noticeId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****9012"
+        totalClaimAmount:
+          type: number
+          format: decimal
+          example: 1425.75
+        regulatoryRequirement:
+          type: string
+          example: "FDCPA Section 809 Validation"
+        deliveryMethod:
+          type: string
+          example: "Certified Mail, Email"
+        collectionStage:
+          type: string
+          example: "Formal Collection"
+        itemizedCharges:
+          type: object
+          properties:
+            principal:
+              type: number
+              format: decimal
+              example: 1000.00
+            interest:
+              type: number
+              format: decimal
+              example: 200.75
+            lateFees:
+              type: number
+              format: decimal
+              example: 150.00
+            collectionFees:
+              type: number
+              format: decimal
+              example: 75.00
+
+    PaymentPlanRequest:
+      type: object
+      required:
+        - cardLastFour
+        - overdueBalance
+        - originalRate
+        - reducedRate
+        - planDuration
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "3456"
+        overdueBalance:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 2000.00
+        originalRate:
+          type: number
+          format: decimal
+          minimum: 0
+          maximum: 100
+          example: 24.99
+        reducedRate:
+          type: number
+          format: decimal
+          minimum: 0
+          maximum: 100
+          example: 12.99
+        planDuration:
+          type: integer
+          minimum: 1
+          maximum: 60
+          example: 6
+
+    PaymentPlanResponse:
+      type: object
+      properties:
+        proposalId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****3456"
+        monthlyPayment:
+          type: number
+          format: decimal
+          example: 350.00
+        reducedInterestRate:
+          type: number
+          format: decimal
+          example: 12.99
+        deliveryChannels:
+          type: array
+          items:
+            type: string
+          example: ["Email", "Postal Mail"]
+        collectionStage:
+          type: string
+          example: "Payment Plan Proposal"
+
+    PaymentPlanExecutionRequest:
+      type: object
+      required:
+        - monthlyPayment
+        - interestRate
+        - paymentsCompleted
+      properties:
+        monthlyPayment:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 220.00
+        interestRate:
+          type: number
+          format: decimal
+          minimum: 0
+          maximum: 100
+          example: 15.99
+        paymentsCompleted:
+          type: integer
+          minimum: 0
+          example: 8
+
+    PaymentPlanExecutionResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****2345"
+        remainingBalance:
+          type: number
+          format: decimal
+          example: 880.00
+        accountStatus:
+          type: string
+          example: "Payment Plan Active"
+        communicationChannels:
+          type: array
+          items:
+            type: string
+          example: ["Email", "SMS"]
+
+    LegalActionRequest:
+      type: object
+      required:
+        - cardLastFour
+        - daysPastDue
+        - totalClaim
+        - legalFees
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "7890"
+        daysPastDue:
+          type: integer
+          minimum: 1
+          example: 150
+        totalClaim:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 3500.50
+        legalFees:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 500.00
+
+    LegalActionResponse:
+      type: object
+      properties:
+        legalActionId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****7890"
+        finalClaimAmount:
+          type: number
+          format: decimal
+          example: 4000.50
+        regulatoryRequirement:
+          type: string
+          example: "State Legal Action Requirements, FDCPA"
+        serviceMethod:
+          type: string
+          example: "Legal Service, Certified"
+        collectionStage:
+          type: string
+          example: "Legal Proceedings"
+
+    AgencyTransferRequest:
+      type: object
+      required:
+        - cardLastFour
+        - daysPastDue
+        - accountBalance
+        - collectionAgency
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "4567"
+        daysPastDue:
+          type: integer
+          minimum: 1
+          example: 90
+        accountBalance:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 1800.25
+        collectionAgency:
+          type: string
+          example: "Premier Recovery Services"
+
+    AgencyTransferResponse:
+      type: object
+      properties:
+        transferId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****4567"
+        encryptionProtocol:
+          type: string
+          example: "AES-256 Encryption"
+        newStatus:
+          type: string
+          example: "External Collection"
+        collectionStage:
+          type: string
+          example: "Collection Agency Handoff"
+        regulatoryRequirement:
+          type: string
+          example: "FDCPA Third-Party Disclosure"
+
+    MultiChannelCommunicationRequest:
+      type: object
+      required:
+        - cardLastFour
+        - collectionStage
+        - preferredChannels
+        - balanceAmount
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "8901"
+        collectionStage:
+          type: string
+          example: "Multi-Channel"
+        preferredChannels:
+          type: array
+          items:
+            type: string
+            enum: [Email, SMS, Postal, Phone]
+          minItems: 1
+          example: ["Email", "SMS", "Postal", "Phone"]
+        balanceAmount:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 925.75
+
+    MultiChannelCommunicationResponse:
+      type: object
+      properties:
+        communicationId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****8901"
+        deliveryChannels:
+          type: array
+          items:
+            type: string
+          example: ["Email", "SMS", "Postal Mail", "Phone"]
+        deliveryConfirmation:
+          type: string
+          example: "Email Opened, SMS Delivered, Mail Tracking Active, Call Completed"
+
+    StatusTransitionRequest:
+      type: object
+      required:
+        - currentStatus
+        - daysInStatus
+        - transitionTrigger
+      properties:
+        currentStatus:
+          type: string
+          enum: [Current, Past Due, Delinquent, Serious Delinquency, Collection, Payment Plan, Resolved]
+          example: "Current"
+        daysInStatus:
+          type: integer
+          minimum: 0
+          example: 1
+        transitionTrigger:
+          type: string
+          example: "Payment Due Date"
+
+    StatusTransitionResponse:
+      type: object
+      properties:
+        transitionId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****5432"
+        newStatus:
+          type: string
+          example: "Past Due"
+        newCollectionStage:
+          type: string
+          example: "Initial Past Due"
+        auditTrail:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-01-15T10:30:00Z"
+            reason:
+              type: string
+              example: "Payment Due Date"
+            userId:
+              type: string
+              example: "system-auto"
+
+    MidCollectionPaymentRequest:
+      type: object
+      required:
+        - daysPastDue
+        - currentCollectionStage
+        - scheduledActivity
+        - originalBalance
+        - paymentAmount
+      properties:
+        daysPastDue:
+          type: integer
+          minimum: 1
+          example: 75
+        currentCollectionStage:
+          type: string
+          example: "Legal Preparation"
+        scheduledActivity:
+          type: string
+          example: "Legal Action Preparation"
+        originalBalance:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 2200.00
+        paymentAmount:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 800.00
+
+    MidCollectionPaymentResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****9876"
+        remainingBalance:
+          type: number
+          format: decimal
+          example: 1400.00
+        workflowAction:
+          type: string
+          example: "Legal Action Halted"
+        newStrategy:
+          type: string
+          example: "Resume Standard Collection"
+        updatedStatus:
+          type: string
+          example: "Payment Received"
+
+    FinancialCalculationRequest:
+      type: object
+      required:
+        - delinquencyDays
+        - principalBalance
+        - standardRate
+        - penaltyRate
+      properties:
+        delinquencyDays:
+          type: integer
+          minimum: 1
+          example: 90
+        principalBalance:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 2000.00
+        standardRate:
+          type: number
+          format: decimal
+          minimum: 0
+          maximum: 100
+          example: 24.99
+        penaltyRate:
+          type: number
+          format: decimal
+          minimum: 0
+          maximum: 100
+          example: 29.99
+
+    FinancialCalculationResponse:
+      type: object
+      properties:
+        calculationId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****2468"
+        accruedInterest:
+          type: number
+          format: decimal
+          example: 625.50
+        totalLateFees:
+          type: number
+          format: decimal
+          example: 125.00
+        collectionFees:
+          type: number
+          format: decimal
+          example: 100.25
+        totalOwed:
+          type: number
+          format: decimal
+          example: 2850.75
+        auditTrail:
+          type: object
+          properties:
+            calculationMethod:
+              type: string
+              example: "Compound Interest Formula"
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-01-15T10:30:00Z"
+
+    ComplianceValidationRequest:
+      type: object
+      required:
+        - cardLastFour
+        - regulatoryRequirement
+        - customerJurisdiction
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "6789"
+        regulatoryRequirement:
+          type: string
+          example: "FDCPA Section 809 Validation Notice"
+        customerJurisdiction:
+          type: string
+          example: "Federal"
+
+    ComplianceValidationResponse:
+      type: object
+      properties:
+        validationId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****6789"
+        validationPeriod:
+          type: integer
+          example: 30
+        customerRights:
+          type: string
+          example: "Dispute Process, Validation Request, Cease Communication"
+        complianceStatus:
+          type: string
+          example: "Fully Compliant with Federal Requirements"
+
+    SystemSyncRequest:
+      type: object
+      required:
+        - cardLastFour
+        - collectionAgency
+        - accountBalance
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "3210"
+        collectionAgency:
+          type: string
+          example: "Advanced Recovery Solutions"
+        accountBalance:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 1375.00
+
+    SystemSyncResponse:
+      type: object
+      properties:
+        syncId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****3210"
+        syncStatus:
+          type: string
+          example: "Real-time Sync"
+        dataIntegrityCheck:
+          type: boolean
+          example: true
+        auditTrailSync:
+          type: boolean
+          example: true
+
+    DynamicTemplateRequest:
+      type: object
+      required:
+        - cardLastFour
+        - customerSegment
+        - languagePreference
+        - jurisdictionCompliance
+        - collectionStage
+      properties:
+        cardLastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+          example: "1357"
+        customerSegment:
+          type: string
+          enum: [Premium Cardholder, Standard Customer, Business Customer, Student Customer]
+          example: "Premium Cardholder"
+        languagePreference:
+          type: string
+          enum: [English, Spanish, French]
+          example: "English"
+        jurisdictionCompliance:
+          type: string
+          example: "California Consumer Protection"
+        collectionStage:
+          type: string
+          example: "Communication Optimization"
+
+    DynamicTemplateResponse:
+      type: object
+      properties:
+        templateId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        maskedCardNumber:
+          type: string
+          pattern: '^\*\*\*\*[0-9]{4}$'
+          example: "****1357"
+        personalizedContent:
+          type: string
+          example: "Premium customer personalized content"
+        accessibilityStandard:
+          type: string
+          example: "WCAG 2.1 AA"
+        complianceValidation:
+          type: boolean
+          example: true
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 400
+        message:
+          type: string
+          example: "Invalid request parameters"
+        details:
+          type: string
+          example: "The cardLastFour field must contain exactly 4 digits"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00Z"
+        traceId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+
+  responses:
+    BadRequest:
+      description: Bad request - Invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: "Invalid request parameters"
+            details: "The cardLastFour field must contain exactly 4 digits"
+            timestamp: "2024-01-15T10:30:00Z"
+            traceId: "123e4567-e89b-12d3-a456-426614174000"
+
+    Unauthorized:
+      description: Unauthorized - Invalid or missing authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 401
+            message: "Authentication required"
+            details: "Valid API key or bearer token required"
+            timestamp: "2024-01-15T10:30:00Z"
+            traceId: "123e4567-e89b-12d3-a456-426614174000"
+
+    Forbidden:
+      description: Forbidden - Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 403
+            message: "Access forbidden"
+            details: "Insufficient permissions for this operation"
+            timestamp: "2024-01-15T10:30:00Z"
+            traceId: "123e4567-e89b-12d3-a456-426614174000"
+
+    NotFound:
+      description: Not found - Resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 404
+            message: "Resource not found"
+            details: "The specified account ID does not exist"
+            timestamp: "2024-01-15T10:30:00Z"
+            traceId: "123e4567-e89b-12d3-a456-426614174000"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 500
+            message: "Internal server error"
+            details: "An unexpected error occurred while processing the request"
+            timestamp: "2024-01-15T10:30:00Z"
+            traceId: "123e4567-e89b-12d3-a456-426614174000"
+
+tags:
+  - name: Notifications
+    description: Notification and reminder management
+  - name: Collection
+    description: Collection process management
+  - name: Security
+    description: Security and PII protection
+  - name: Legal Actions
+    description: Legal proceedings and court actions
+  - name: Payment Plans
+    description: Payment plan management and execution
+  - name: Collection Agency
+    description: External collection agency integration
+  - name: Multi-Channel Communication
+    description: Multi-channel communication delivery
+  - name: Status Management
+    description: Account status and lifecycle management
+  - name: Payment Processing
+    description: Payment processing and edge cases
+  - name: Financial Engine
+    description: Financial calculations and interest processing
+  - name: Regulatory Compliance
+    description: Regulatory compliance and validation
+  - name: Integration
+    description: System integration and synchronization
+  - name: Templates
+    description: Dynamic template management
