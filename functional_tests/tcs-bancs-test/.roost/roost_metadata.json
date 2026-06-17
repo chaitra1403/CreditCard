@@ -1,0 +1,24 @@
+{
+  "project": {
+    "name": "tcs-bancs-test",
+    "created_at": "2026-06-17T12:24:51.000Z",
+    "updated_at": "2026-06-17T12:24:51.000Z"
+  },
+  "files": {
+    "input_files": [
+      {
+        "fileName": "tcs-bancs-test.txt",
+        "fileURI": "/var/tmp/Roost/RoostGPT/tcs-bancs-test/ee831245-8775-4827-a2de-f70a4c76681f/functional_tests/tcs-bancs-test/tcs-bancs-test.txt",
+        "fileSha": "cf83e1357e"
+      },
+      {
+        "fileName": "TCSBaNCS_ST_BSSB_FSD_CallCenterOperator_v14.2.docx",
+        "fileURI": "/var/tmp/Roost/RoostGPT/tcs-bancs-test/ee831245-8775-4827-a2de-f70a4c76681f/functional_tests/tcs-bancs-test/TCSBaNCS_ST_BSSB_FSD_CallCenterOperator_v14.2.docx",
+        "fileSha": "55a242034e"
+      }
+    ]
+  },
+  "api_files": {
+    "input_files": []
+  }
+}
