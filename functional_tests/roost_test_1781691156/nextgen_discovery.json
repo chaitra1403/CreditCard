@@ -1,0 +1,120 @@
+{
+  "summary": "The source details requirements and flows for a securities back-office processing platform used by a bank. It covers end-to-end workflows across order capture, validation, trading, settlement, reconciliation, amendments, stock transfers, accounting, tax handling, charges/fees, and regulatory reporting. It provides granular rules and state transitions for each process, multi-channel and file-based event handling, manual interventions, regulatory checks, batch and real-time flows, and comprehensive audit/reporting mandates—all under the scope of stringent regulatory/compliance expectations.",
+  "domain": "fintech (securities back office, banking)",
+  "riskLevel": "high",
+  "totalRecommendedTestCount": 55,
+  "workflows": [
+    {
+      "name": "Security Product Setup",
+      "description": "Setup and mapping of local and foreign securities from external sources (TASE, Bloomberg, Orbis, Magna) reflecting in Bancs with all field validations.",
+      "priority": "P0",
+      "testPointCount": 3,
+      "rationale": "3 sources (TASE, Bloomberg, Orbis) + mapping rules + validation and upload (including error/negative); screens and mapping tables specified."
+    },
+    {
+      "name": "Security Rate Creation and Maintenance",
+      "description": "Upload, validate and maintain security rates from market feeds/providers/manual uploads, with mass and manual entry, validation, and distribution to internal modules.",
+      "priority": "P0",
+      "testPointCount": 3,
+      "rationale": "Manual and automated upload and validation, feed failure, mass upload, and downstream rate utilization; UI, file, and error cases."
+    },
+    {
+      "name": "Order Lifecycle Management",
+      "description": "Processing of Buy/Sell/other orders, including validations, placement, blocks, status transitions, partials, and FO/BO handoff.",
+      "priority": "P0",
+      "testPointCount": 4,
+      "rationale": "Covers FO/BO, pre/post-trade validation, blocks, state (Authorized, Placed, Executed), amendments/cancellation, multichannel input."
+    },
+    {
+      "name": "Order Amendment and Correction Flows",
+      "description": "Handling post-execution modifications, cancellations, and missing/corrected orders, including 4-eyes approval.",
+      "priority": "P0",
+      "testPointCount": 3,
+      "rationale": "UI flows for 3 amendment types + validation + 4-eyes approval and correction handling; detailed screen flows and business gating."
+    },
+    {
+      "name": "Trade Cycle Processing (Local & Foreign)",
+      "description": "End-to-end lifecycle for trade settlement, updates, file ingestion, reconciliation, partials, and error/failure handling for local and foreign trades.",
+      "priority": "P0",
+      "testPointCount": 6,
+      "rationale": "Full state transitions, reconciliation via 1051/1054/1052, failure states, FO/BO-driven, batch/manual scenarios, partial execs, file errors."
+    },
+    {
+      "name": "Manual Matching",
+      "description": "Manual reconciliation of unmatched open deliveries and settlement advices, including tolerance rules and error cases.",
+      "priority": "P1",
+      "testPointCount": 3,
+      "rationale": "UI grid fields, matching logic, tolerance, errors, search/selection, audit; covers both positive and error/failure."
+    },
+    {
+      "name": "Stock Transfers",
+      "description": "Securities transfer processing for within bank, between banks, and third-party; includes tax rules, validation, batch/real-time orchestration.",
+      "priority": "P0",
+      "testPointCount": 5,
+      "rationale": "Different transfer types (within, between, 3rd party, virtual sell), regulatory checks, UI screens, batch, file (15/132), AML/tax handling, statuses."
+    },
+    {
+      "name": "Cash and Security Movements",
+      "description": "Real-time and batch creation/stamping of debit/credit movements, including double-sided booking, backdated/corrected movements, and accounting event integration.",
+      "priority": "P0",
+      "testPointCount": 3,
+      "rationale": "Documented calculation rules, accounting-side double-entry, event stamping; covers numeric, correction, and reversal."
+    },
+    {
+      "name": "Tax Engine Integration",
+      "description": "Integration and reconciliation of all security movements with the tax engine, EOD position updates, gap handling, and customer postings.",
+      "priority": "P1",
+      "testPointCount": 3,
+      "rationale": "EOD batch, file exchange, tax/refund updates, recon mismatches, correction flows; both positive and negative paths."
+    },
+    {
+      "name": "Charges, Commissions, and Fee Calculation",
+      "description": "Calculation, application, reporting of multi-dimensional fees and commissions as per BOI/TASE/ISA/IRS, with limits, fee types, auditing, and overrides.",
+      "priority": "P0",
+      "testPointCount": 5,
+      "rationale": "Multiple fee bases/types (flat, slab, per unit, 3rd party), min/max rules, overrides, aggregation, audit, reporting (414, 814, 815, 425)."
+    },
+    {
+      "name": "Mutual Fund (MF) Trading & Allocation",
+      "description": "Order, allocation, clearing, price update/correction, file and manual workflow coverage for MF trading (local and foreign), including auto/manual price correction.",
+      "priority": "P1",
+      "testPointCount": 3,
+      "rationale": "Covers workflow matrix: local/foreign, online/offline, auto/manual correction, file and batch, BO/FO, regulatory."
+    },
+    {
+      "name": "Position Reconciliation",
+      "description": "EOD reconciliation and mismatch handling for local securities, foreign securities, and tax engine positions (file 1053, 871, tax engine).",
+      "priority": "P1",
+      "testPointCount": 3,
+      "rationale": "Three matrices (local, foreign, tax); recon error and success; BO user report extracts; covers both EOD positive/negative paths."
+    },
+    {
+      "name": "File Processing and Interface Validation",
+      "description": "Ingestion, processing, and error validation for all batch and online files (TASE, Market Info, Broker, APEX), including required technical/business validation and alerts.",
+      "priority": "P0",
+      "testPointCount": 3,
+      "rationale": "Multiple file types: 1051, 1052, 1053, 870, 872, 31, 32, 814, 815, 544, including BOD/EOD, technical validation, alerts, retry/failover."
+    },
+    {
+      "name": "BO Reports and Regulatory Messages",
+      "description": "Creation, content, format, and timing of all system-generated BO, regulatory, and end-customer reports, batch/online, UI/export paths.",
+      "priority": "P0",
+      "testPointCount": 3,
+      "rationale": "Explicit coverage of all message/report types, file/report generation, user exports, cover EOD, Jasper, regulatory CSV, timing and audit content."
+    },
+    {
+      "name": "Role and Authorization Flows",
+      "description": "Enforcement and validation of FO/BO, 4-eyes, and POA separation of duties, manual control and overrides.",
+      "priority": "P1",
+      "testPointCount": 2,
+      "rationale": "1 for POA/4-eyes on order/amend, 1 for FO/BO/role gating."
+    },
+    {
+      "name": "UI Screens, Forms, and Field Validation",
+      "description": "Validation of key screens (order amendment, stock transfer, manual matching), their search/filter, error, and mandatory field enforcement.",
+      "priority": "P1",
+      "testPointCount": 3,
+      "rationale": "Screens for order amendment (3 modes), transfer, manual matching—UI field validation, errors, role interactions."
+    }
+  ]
+}
