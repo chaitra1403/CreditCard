@@ -1,0 +1,191 @@
+Login via browser URL presents logon screen through SSO layer and refresh keeps user at logon
+Login screen supports Hebrew and English language selection and updates labels
+Keyboard navigation on logon screen supports TAB forward and SHIFT+TAB backward
+First-time login uses default password provided by admin and navigates to Customer Authentication
+Pressing ENTER submits login and navigates to Customer Authentication
+Successful login shows Customer Authentication screen with authentication controls
+Customer Authentication Service Mode supports Phone, Fax, Email
+Authenticate customer by Identification Type and Identification Number shows Portfolio List and allows Submit
+Authenticate customer by Portfolio Reference Number shows Portfolio List and allows Submit
+Reset clears Customer Authentication inputs
+Portfolio List displays linked portfolios and requires selection before Submit
+Integrated login requires selecting Trading from three options to reach Trading screen
+Trading screen shows tiles and opens functions by clicking tiles
+Menu bar contains required top-level menus and each is clickable
+Title area shows Bank Name and logged-in call centre user name and persists after refresh
+Toolbar navigation opens key functions
+Non-customer functions are accessible without selecting customer
+Customer-specific activities require customer authentication
+Open Dashboard from Trading screen after completing login steps
+Dashboard shows six widgets at a time and supports configuration from list
+Add Widget prevents selecting already added widget and allows selecting non-added widget
+Remove widget using Close and then re-add from Add Widget list
+Reorder widgets by moving within widget window frame and restore original order
+Save widgets layout using Widgets Layout checkbox in Settings and verify persistence after relogin
+Widget header controls (Help/Refresh/Close/Maximize) are present for applicable widgets and operate
+Linked Quote widget updates when highlighting a Market Watch row and shows top 5 bids/offers
+Quotes widget requires minimum characters before showing suggestion list and supports refresh
+Charts widget supports magnify by dragging and Maximize/Restore
+Account & Portfolio widget displays currency, net balance, available balance and supports Refresh
+Order Book widget shows pending orders and supports actions and refresh
+Trade Book widget shows current-date trades and supports Maximize
+Top Gainers and Losers widget is visible and displays LTP-based gainers/losers
+Major Indices widget supports '+' intraday chart, Maximize to Index Watch and Refresh
+Exchange News widget shows headlines with date/time/link and Maximize
+Messages widget shows Admin messages with date/time and supports Maximize and Refresh
+Pre-order check Error blocks proceeding until addressed
+Pre-order check Warning requires Yes to continue and No to discontinue
+Pre-order check Information is display-only and does not require user input
+Equity order placement follows Create -> Preview -> Confirmation phases
+Open Order Entry from Orders menu opens Create phase
+Invoke Order Entry from Market Watch buy/sell symbol
+Invoke Order Entry from left toolbar buy/sell symbol
+Advisory buy order allows entering Symbol, Exchange and Advisory Number without placing order
+Symbol selection uses first three characters and dropdown; Level 1 quotes and Get Quote appear
+Level 2 quote opens via book icon on Order Entry
+Refresh reloads Level 1 quotes on Order Entry
+Principal Account and Fee Account appear for single cash account
+Amount currency is based on security type (ILS or USD) and Amount/Quantity/Price accept input
+Quantity Type Disclosed enables initial/additional disclosed quantity fields
+Quantity Type Regular disables conditional qty1 and conditional qty2 fields
+Stop Loss order requires Trigger Price and Limit Price to proceed to Preview
+Market type disables Price and Trigger Price fields
+Validity Type supports options and auto-populates Validity Date
+Jumbo Flag is reflected on Preview
+Create screen shows balances (Security Balance, Trade balance, Available balance, Additional limit)
+Place Order opens Preview showing symbol, quantity/price, jumbo flag and advisory number
+Preview provides print commission details link
+Confirm buy requires agreement checkbox to reach Confirmation
+Confirmation shows internal order number and links to Order Book and Place New Order
+Confirmation allows refreshing order status using refresh symbol adjacent to status
+Sell order entry follows Create -> Preview -> Confirmation similar to buy
+Full Sell option available and reflected on Preview/Confirmation
+Full Sell with fractional holdings is not supported and does not confirm fractional liquidation
+Equity Order Book filters by Exchange, Instrument, Mode, Order Status, Symbol and Go shows results
+Equity Order Book Order Status list includes Modification Transit and Expired
+Equity Order Book pagination uses right arrow and export via excel icon
+Equity Order Book displays required columns including modify/cancel link and call centre id and user id
+Clicking symbol in Equity Order Book opens quotes screen
+Clicking internal order number opens equity order trail window
+Order Trail provides export to excel, refresh and help controls
+Modification is allowed only for Pending orders
+Modify flow transitions Modify Order -> Submit -> Order Verification -> Confirm and receives confirmation
+After exchange modification confirmation, order status becomes Modified
+Cancellation is allowed only for Pending orders
+Cancel flow sends cancellation request to exchange and receives confirmation message
+Cancel dialog Close discontinues cancellation and order remains Pending
+After refreshing order book, cancelled order status changes to cancel
+NAV List displays required columns
+NAV List supports filtering by AMC Name and by symbol/Exchange code
+NAV List export using excel icon initiates download
+NAV List Security Details symbol opens selected security details
+NAV List Purchase and Redeem links open respective screens
+MF Purchase create screen opened from NAV List auto-populates fund details
+MF Purchase opened directly requires entering symbol to auto-populate details
+MF Purchase supports Units or Amount input and shows balances before placing order
+MF Purchase has Fund Policy link
+MF Purchase advised order supports advisory checkbox and advisory reference number
+MF Purchase Place order shows alerts then Proceed -> Preview and Confirm -> Confirmation with status
+MF Purchase create screen provides Reset and Close buttons
+MF Redeem opened from NAV List auto-populates details and direct open requires symbol entry
+MF Redeem supports Full sell flag
+MF Redeem supports Units or Amount and enforces one input method
+MF Redeem Place order shows alerts then Proceed -> Preview and Confirm -> Confirmation with Order Book link
+MF Order Book shows required fields including Action, Units, NAV, Order Status, Executed Units, Source
+MF Order Trail opens from internal order number and supports export to excel
+ETF List supports entering symbol and selecting from list
+ETF List provides Purchase/Redeem (MF path) and Buy/Sell (Equity path)
+ETF order from Buy/Sell icon shows popup to select order path and routes accordingly
+Trade Book lists current date trades and excludes Mutual Fund trades
+Trade Book search requires Exchange, Instrument and Symbol then GO
+Trade Book supports export to excel
+Order History accessed under Reports -> History reports -> order history with exchange/instrument/date range
+Order History supports excel export
+Trade History accessed under Reports -> History reports -> trade history with calendar date range
+Trade History supports excel export
+Advanced Search link beside Symbol supports criteria and returns security on Go
+Makam Calculator requires mandatory fields before Submit produces outputs
+Makam Calculator accepts optional fees as zero or blank and still computes outputs
+Makam Calculator Submit displays all yield outputs
+Tax Simulation first screen lists securities and shows required columns
+Tax Simulation quantity must be less than or equal to available quantity and price is editable
+Tax Simulation result screen provides Option To Sell with mentioned price and quantity
+Fund Balance requires selecting Account and Currency then Go and shows balances in both currencies
+Fund Balance displays required fields and supports example arithmetic verification when seeded
+Blocked cash details drilldown shows required fields
+Portfolio Valuation defaults to Today and supports Historical by changing date
+Portfolio Valuation provides Exchange rate link
+Portfolio Valuation displays securities in base currency ILS/USD
+Portfolio Valuation supports export to excel sheet
+Detailed Portfolio Valuation accessible under Day valuation and supports Exchange wise and Asset wise
+Detailed Portfolio Valuation grouping is based on Currency irrespective of view
+Selecting a security shows news and chart (intra-day and across days)
+Detailed Portfolio Valuation allows Buy/Sell from portfolio list
+Corporate Action link displayed for pending corporate action on a security
+Expanding a security row using plus sign shows required security-wise details fields
+Portfolio list icons C/A/U/P are shown for seeded conditions
+Block Details shows block date and movement description
+Security Transaction shows breakdown of security buy/sell activity
+Portfolio Summary shows Overall Summary, Heat map, and Fund Balances & Break-up sections
+Portfolio Summary pie chart supports criteria and shows valuation data below chart
+Create new market watch and open saved market watch
+Market Watch Add/Edit security adds one security at a time and supports replacement
+Market Watch Add Multiple Security adds multiple securities in one go
+Market Watch supports Delete Security, Rename, Save, and Customize via right click
+Place order from Market Watch defaults required attributes into order entry
+Market by Price invoked from Market Watch defaults security and exchange and shows MBP details
+Top Gainers/Losers supports criteria and cutoff upper limit filtering
+Chart View opens new window and offers Basic and interactive charts
+Chart View supports saving chart as jpeg and png
+Interactive chart supports hover OHLC and From/To date range
+Interactive chart provides pen option to draw lines/marks
+Get Quote displays market depth up to top 5 buyers and sellers
+Get Quote screen provides required links and they are clickable
+Get Quote shows security status/phase/exchange status and refresh reloads quotes
+Index Watch requires selecting exchange and displays required index fields
+Index Watch supports Refresh and Close
+Exchange News supports exchange selection and opening news via headline link
+Company News requires entering symbol and Go to display detailed news
+In-job activities do not require customer login
+In-job Order Book supports filters and HO can view ALL call centres
+In-job Security Holding displays required fields
+In-job MF Order History supports filters and HO can view ALL call centres
+Corporate Action accessible via CA icon from Portfolio Valuation
+Corporate Action displays multiple events and supports Choose Option on behalf of customer
+Corporate Action View Response allows modify/cancel previously submitted responses
+Security Transfer initiation blocks when management unit mismatches with exact error message
+Add Security screen shows required fields and transfer quantity defaults to available and is editable
+Only settled positions are shown; blocked/unsettled positions are not shown
+Transfer quantity supports fractional quantities for within bank and outside bank
+Selecting CA-pending security shows CA indicator and alert message template
+Transfer Quantity cannot exceed Available Quantity and shows exact error message template
+Default exchange dropdown value is TASE on Add Security
+All checkboxes selected by default and Transfer Quantity equals Available Quantity
+Unchecking a security clears its transfer quantity and rechecking restores default
+Order date defaults to current date and cannot be modified
+Add Beneficiary Transfer from Account Number is defaulted and not editable
+Outside Bank option disabled when exchange selected is not TASE
+Virtual Sell enabled only for Within Bank and defaults beneficiary account to source and disables it
+Within Bank disables Bank/Branch fields and only beneficiary account number is entered
+Outside Bank entering Bank Code and tab displays bank name beside code
+Outside Bank magnifier opens list of banks and selection populates bank code and name
+Outside Bank branch magnifier opens list of branches for selected bank and selection populates branch code and name
+Same Entity auto-determined for within bank matching BP IDs and Transfer Case not populated
+When Same Entity not matched, user must select Transfer Case
+Outside bank Same Entity unticked by default and user can tick or select transfer case
+Transfer Case dropdown enabled only when Same Entity unchecked and disabled when checked
+Transfer without Identification (Tax Event) option visible only to Head Office
+Mutual funds cannot be transferred to other entities when Same Entity not selected
+Selecting Transfer without Identification (Tax Event) shows informational taxation message
+Outside bank transfer for non-TASE shows error 'Only TASE securities can be transferred Outside Bank.'
+Security Transfer commission computed only after Verify clicked on Preview
+Preview supports Print Commission Details and View comments and agreement checkbox is present
+Release sends Security Transfer request to Back Office and shows Confirmation
+Authorization Queue shows My Queue and Pool Queue with definitions
+E-Journal shows Initiated By Me and Authorized By Me lists
+Self-Transaction block shows exact error message text
+Self-Transaction handling applies on BP level not portfolio level
+Gainer Loser is always delayed for local and foreign contexts
+Index Inquiry is always live for local and EOD data for foreign (as indicated by UI behavior)
+Tax Simulation data is always delayed (as indicated by UI)
+TASE Security Transaction Types list includes Buy, Sell, CA, Security Transfer, Others
